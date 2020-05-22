@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -25,6 +26,8 @@ public class BatteryView extends View {
     private int batteryColor = Color.GRAY;
     // Цвет уровня заряда
     private int levelColor = Color.GREEN;
+    // Цвет уровня заряда при нажатии +
+    private int levelPressedColor = Color. RED;
     // Уровень заряда
     private int level = 100;
 
@@ -34,6 +37,8 @@ public class BatteryView extends View {
     private Rect levelRectangle = new Rect() ;
     // Изображение головы батареи
     private Rect headRectangle = new Rect() ;
+    // "Краска" уровня заряда при касании +
+    private Paint levelPressedPaint;
     // "Краска" батареи
     private Paint batteryPaint;
     // "Краска" заряда
@@ -42,6 +47,10 @@ public class BatteryView extends View {
     private int width = 0;
     // Высота элемента
     private int height = 0;
+    // Касаемся элемента +
+    private boolean pressed = false;
+    // Слушатель касания +
+    private OnClickListener listener;
 
 
 
@@ -95,9 +104,12 @@ public class BatteryView extends View {
     // следующее слово - имя атрибута:
     // <attr name="level" format="integer" />
         level = typedArray. getInteger(R. styleable. BatteryView_level, 100) ;
+    //добавленный позже атрибут для окрашивания уровня заряда при клике
+        levelPressedColor = typedArray.getColor(R.styleable.BatteryView_level_pressed_color,Color.RED );
     // В конце работы дадим сигнал, что массив со значениями атрибутов
     // больше не нужен. Система в дальнейшем будет переиспользовать этот
     // объект, и мы больше не получим к нему доступ из этого элемента
+
         typedArray. recycle() ;
     }
 
@@ -109,6 +121,10 @@ public class BatteryView extends View {
         levelPaint = new Paint() ;
         levelPaint. setColor(levelColor) ;
         levelPaint. setStyle(Paint. Style. FILL) ;
+        // Задаём "краску" для нажатия на элемент +
+        levelPressedPaint = new Paint() ;
+        levelPressedPaint. setColor(levelPressedColor) ;
+        levelPressedPaint. setStyle(Paint. Style. FILL) ;
     }
 
     // Когда Android создаёт пользовательский экран, ещё не известны размеры
@@ -146,7 +162,42 @@ public class BatteryView extends View {
     protected void onDraw(Canvas canvas) {
         super. onDraw(canvas) ;
         canvas. drawRoundRect(batteryRectangle, round, round, batteryPaint) ;
-        canvas. drawRect(levelRectangle, levelPaint) ;
+        if (pressed) {
+            canvas.drawRect(levelRectangle, levelPressedPaint);
+        } else {
+            canvas. drawRect(levelRectangle, levelPaint) ;
+        }
         canvas. drawRect(headRectangle, batteryPaint) ;
+    }
+
+    // Этот метод срабатывает при касании элемента
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        // Получаем действие (касание, отпускание, перемещение и т. д. )
+        int action = event. getAction() ;
+        // Проверка на начало касания (элемент нажат)
+        if(action == MotionEvent. ACTION_DOWN) {
+        // Установим признак того, что нажали элемент
+            pressed = true;
+        // Вызываем метод для перерисовки
+            invalidate() ;
+        // Если слушатель был установлен, то вызываем его метод
+            if (listener != null) {
+                listener. onClick(this) ;
+            }
+            // Проверка на отпускание элемента (палец убран)
+        } else if(action == MotionEvent. ACTION_UP) {
+            // Снимаем признак касания элемента
+            pressed = false;
+        // Перерисовка элемента
+            invalidate() ;
+        }// Касание обработано, возвращаем true
+        return true;
+    }
+    // Устанавливаем слушатель - с таким вы уже сталкивались при обработке
+    // нажатий на кнопки
+    @Override
+    public void setOnClickListener(View. OnClickListener listener) {
+        this. listener = listener;
     }
 }
