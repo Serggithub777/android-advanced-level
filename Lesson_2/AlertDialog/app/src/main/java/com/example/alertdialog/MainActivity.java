@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         findViewById(R.id.alertDialog3).setOnClickListener(clickAlertDialog3);
+        findViewById(R.id.alertDialogList).setOnClickListener(clickAlertDialogList);
 
     }
 
@@ -62,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
     View.OnClickListener clickAlertDialog3 = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Context context;
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder.setTitle(R.string.exclamation)
                     .setMessage("2 * 2 = 4?")
@@ -90,5 +90,28 @@ public class MainActivity extends AppCompatActivity {
                    alert.show();
         }
     };
+    private View.OnClickListener clickAlertDialogList = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String[] items = getResources() . getStringArray(R.array.choose) ;
+// Создаём билдер и передаём контекст приложения
+                AlertDialog. Builder builder = new AlertDialog. Builder(MainActivity. this) ;
+// В билдере указываем заголовок окна (можно указывать как ресурс, так
+// и строку)
+                builder. setTitle(R. string. exclamation)
+// Добавим список элементов
+                        . setItems(items, new DialogInterface. OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int
+                                    item) {
+                                Toast. makeText(MainActivity. this, String. format("Выбран пункт %d", item + 1) , Toast. LENGTH_SHORT) . show() ;
+                            }
+                        } ) ;
+                AlertDialog alert = builder. create() ;
+                alert. show() ;
+            }
+    } ;
 }
+
+
 
