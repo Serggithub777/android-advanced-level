@@ -37,15 +37,15 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
             // Создаём билдер и передаём контекст приложения
             AlertDialog. Builder builder = new
-                    AlertDialog. Builder(MainActivity. this) ;
+                    AlertDialog. Builder(MainActivity.this) ;
         // В билдере указываем заголовок окна (можно указывать как ресурс,
         // так и строку)
             builder. setTitle(R. string. exclamation)
+                    // Можно указать и пиктограмму
+                    . setIcon(R. mipmap. ic_launcher_round)
         // Указываем сообщение в окне (также есть вариант со
         // строковым параметром)
                     . setMessage(R. string. press_button)
-        // Можно указать и пиктограмму
-                    . setIcon(R. mipmap. ic_launcher_round)
         // Из этого окна нельзя выйти кнопкой Back
                     . setCancelable(false)
         // Устанавливаем кнопку (название кнопки также можно
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             } ) ;
             AlertDialog alert = builder. create() ;
-            alert. show() ;
+            alert.show() ;
             Toast. makeText(MainActivity. this, "Диалог открыт",
                     Toast. LENGTH_SHORT) . show() ;
         }

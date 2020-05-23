@@ -6,8 +6,8 @@
     <string name="alert_dialog_list_single">Alert Dialog с выбором одного</string>
     <string name="alert_dialog_list_multi">Alert Dialog с выбором нескольких</string>
 
-    <string name="exclamation">Важное сообщение! </string>
-    <string name="press_button">Нажмите кнопку! </string>
+    <string name="exclamation">Важное сообщение!</string>
+    <string name="press_button">Нажмите кнопку!</string>
     <string name="button">КНОПКА</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
