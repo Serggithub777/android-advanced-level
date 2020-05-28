@@ -12,16 +12,29 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
+    private int counterThread = 0;
+    private TextView textView;
+    private TextView textIndicator;
+    private EditText seconds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final Button button = findViewById(R. id. button) ;
-        final TextView textView = findViewById(R. id. textView) ;
-        final TextView textIndicator = findViewById(R. id. textIndicator) ;
-        final EditText seconds = findViewById(R. id. editText) ;
+        initViews();
+        initUIButton();
+        initButtonThread() ;
+    }
+
+    private void initViews() {
+        textView = findViewById(R. id. textView) ;
+        textIndicator = findViewById(R. id. textIndicator) ;
+        seconds = findViewById(R. id. editText) ;
+    }
+
+    private void initUIButton() {
+        Button button = findViewById(R. id. button) ;
         button. setOnClickListener(new View. OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -31,8 +44,36 @@ public class MainActivity extends AppCompatActivity {
                 textView. setText(result) ;
             }
         } ) ;
+
     }
 
+    private void initButtonThread() {
+        Button calcThread = findViewById(R. id. calcThreadBtn) ;
+        calcThread. setOnClickListener(new View. OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                counterThread++;
+                final int numberThread = counterThread; // это присвоение делается для потокобезопасности
+                                                       // чтобы в случае изменения одной переменной вторая был не изменна
+                final int secs = Integer. parseInt(seconds. getText() . toString() ) ;
+                textIndicator. setText(String. format("%sСтартуем поток %d  секунд  %d\n",
+                        textIndicator. getText() . toString() , numberThread, secs) ) ;
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        final String result = Long.toString(calculate(secs));
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                textIndicator.setText(String.format("%sИз потока%d\n", textIndicator.getText().toString(), numberThread));
+                                textView.setText(result);
+                            }
+                        });
+                    }
+                } ) . start() ;
+            }
+        } ) ;
+    }
 
     private long calculate(int seconds) {
         Date date = new Date() ;
