@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         initUIButton();
         initButtonThread() ;
         initButtonHandlerThread();
+        initProcessor();
     }
 
     private void initViews() {
@@ -103,6 +104,24 @@ public class MainActivity extends AppCompatActivity {
                 } ) ;
             }
         } ) ;
+    }
+
+    private void initProcessor() {
+        Button button = findViewById(R.id.buttonTwo);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Processor processor = new Processor(new Processor.ProcessListener() {
+                    @Override
+                    public void onFinish(String param) {
+                        textIndicator. setText(String. format("%sИз потока в классе \n", textIndicator. getText() . toString()) ) ;
+                       textIndicator.setText(param);
+                    }
+                });
+                processor.process(Integer. parseInt(seconds. getText() . toString() ));
+            }
+        });
+
     }
 
     private long calculate(int seconds) {
