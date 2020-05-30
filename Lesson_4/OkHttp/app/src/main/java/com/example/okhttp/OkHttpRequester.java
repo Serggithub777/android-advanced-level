@@ -3,6 +3,10 @@ package com.example.okhttp;
 
 import android.os.Handler;
 
+import com.example.okhttp.data.WeatherRequest;
+import com.example.okhttp.model.Weather;
+import com.google.gson.Gson;
+
 import java.io.IOException;
 
 import okhttp3.Call;
@@ -37,11 +41,19 @@ public class OkHttpRequester {
             public void onResponse(Call call, Response response)
                     throws IOException {
                 final String answer = response. body() . string() ;
+                Gson gson = new Gson();
+                WeatherRequest weatherRequest = gson.fromJson(answer, WeatherRequest.class);
+
+                //Маппинг следует выносить в отдельный класс или метод здесь же установим
+                // только один параметр температкру
+                final Weather weather = new Weather();
+                weather.setTemperature((int)weatherRequest.getMain().getTemp());
+
 // Синхронизируем поток с потоком UI
                 handler. post(new Runnable() {
                     @Override
                     public void run() {
-                        listener. onCompleted(answer) ; // Вызываем метод
+                        listener. onCompleted(weather) ; // Вызываем метод
 // обратного вызова
                     }
                 } ) ;
@@ -56,6 +68,6 @@ public class OkHttpRequester {
     // Интерфейс обратного вызова; метод onCompleted вызывается по окончании
     // загрузки страницы
     public interface OnResponseCompleted {
-        void onCompleted(String content) ;
+        void onCompleted(Weather content) ;
     }
 }
