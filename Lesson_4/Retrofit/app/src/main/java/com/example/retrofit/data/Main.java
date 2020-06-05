@@ -22,6 +22,7 @@ public class Main {
         @SerializedName("temp_max")
         @Expose
         private float temp_max;
+
         public float getTemp() {
             return temp;
         }public void setTemp(float temp) {
