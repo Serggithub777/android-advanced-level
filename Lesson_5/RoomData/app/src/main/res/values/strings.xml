@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">RoomData</string>
+    <string name="add">Добавить</string>
+    <string name="delete1">Удалить 1-й</string>
 </resources>

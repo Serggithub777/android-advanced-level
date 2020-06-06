@@ -1,5 +1,6 @@
 package com.example.studentdatabase.dao;
 
+import android.database.Cursor;
 import android.widget.LinearLayout;
 
 import androidx.room.Dao;
@@ -68,7 +69,13 @@ public interface EducationDao {
     // Запрос через Relation
     @Query("SELECT * FROM student")
     List<StudentEmail> getStudentEmails() ;
+
     // Получаем через Relation одного студента
     @Query("SELECT * FROM student WHERE id = :id")
     StudentEmail getOneStudentEmails(long id) ;
+
+    @Query("SELECT id, first_name, last_name FROM student")
+    Cursor getStudentCursor() ;
+    @Query("SELECT id, first_name, last_name FROM student WHERE id = :id")
+    Cursor getStudentCursor(long id) ;
 }
