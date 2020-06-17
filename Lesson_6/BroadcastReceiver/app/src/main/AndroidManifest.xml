@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.broadcastsender">
+    package="com.example.broadcastreceiver">
 
     <application
         android:allowBackup="true"
@@ -9,7 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <receiver
+            android:name=".AirplaneReceiver"
+            android:enabled="true"
+            android:exported="true"></receiver>
+        <receiver
+            android:name=".MessageReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.example.broadcastsender.message" />
+            </intent-filter>
+        </receiver>
 
         <activity android:name=".MainActivity">
             <intent-filter>
