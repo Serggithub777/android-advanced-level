@@ -16,7 +16,7 @@ public class AirplaneReceiver extends BroadcastReceiver {
                 NotificationCompat.Builder(context, "2")
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("BroadcastReceiver")
-                .setContentText("Ht;bv самолета");
+                .setContentText("Режим полета");
         NotificationManager notificationManager = (NotificationManager)
                 context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(messageId++, builder.build());
